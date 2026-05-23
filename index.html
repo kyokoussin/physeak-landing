@@ -563,6 +563,9 @@
         />
         <button type="submit">Rejoindre →</button>
       </form>
+      <div class="form-success" id="ml-success-1">
+        ✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.
+      </div>
     </div>
     <p class="form-note">Pas de spam. Désabonnement en 1 clic.</p>
   </section>
@@ -654,9 +657,9 @@
         />
         <button type="submit">Rejoindre →</button>
       </form>
-    </div>
-    <div class="form-success" id="ml-success-2">
-      ✓ &nbsp;Tu es sur la liste — on te prévient en premier.
+      <div class="form-success" id="ml-success-2">
+        ✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.
+      </div>
     </div>
     <p class="form-note">Objectif : 100 early adopters avant le 5 juin 2026.</p>
   </section>
@@ -694,11 +697,12 @@
           }
         }
 
-        // Afficher succès localement
-        const successDiv = form.parentElement.nextElementSibling;
-        if (successDiv && successDiv.classList.contains('form-success')) {
-          successDiv.style.display = 'flex';
+        // Afficher succès et masquer formulaire
+        const formWrap = form.parentElement;
+        const successDiv = formWrap.querySelector('.form-success');
+        if (successDiv) {
           form.style.display = 'none';
+          successDiv.style.display = 'flex';
         }
       });
     });
