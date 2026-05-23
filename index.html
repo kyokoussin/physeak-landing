@@ -550,20 +550,7 @@
 
     <!-- Mailerlite form -->
     <div class="form-wrap">
-      <form id="ml-form" class="form-row">
-        <input
-          type="email"
-          id="ml-email"
-          name="email"
-          placeholder="ton@email.com"
-          required
-          autocomplete="email"
-        />
-        <button type="submit" id="ml-btn">Rejoindre →</button>
-      </form>
-    </div>
-    <div class="form-success" id="ml-success">
-      ✓ &nbsp;Tu es sur la liste — on te prévient en premier.
+      <div class="ml-embedded" data-form="CwWYSL"></div>
     </div>
     <p class="form-note">Pas de spam. Désabonnement en 1 clic.</p>
   </section>
@@ -645,20 +632,7 @@
     <h2>Prêt à savoir où<br /><span>tu te situes vraiment ?</span></h2>
 
     <div class="form-wrap">
-      <form id="ml-form-2" class="form-row">
-        <input
-          type="email"
-          id="ml-email-2"
-          name="email"
-          placeholder="ton@email.com"
-          required
-          autocomplete="email"
-        />
-        <button type="submit">Rejoindre →</button>
-      </form>
-    </div>
-    <div class="form-success" id="ml-success-2">
-      ✓ &nbsp;Tu es sur la liste — on te prévient en premier.
+      <div class="ml-embedded" data-form="CwWYSL"></div>
     </div>
     <p class="form-note">Objectif : 100 early adopters avant le 5 juin 2026.</p>
   </section>
@@ -669,50 +643,13 @@
   </footer>
 
   <!-- MAILERLITE SCRIPT -->
+  <div class="ml-embedded" data-form="CwWYSL"></div>
   <script>
-    // ── Remplace cette valeur par ton Account ID Mailerlite ──
-    const ML_ACCOUNT_ID = 'VOTRE_ACCOUNT_ID_ICI';
-    const ML_FORM_ID    = 'VOTRE_FORM_ID_ICI';
-
-    async function submitEmail(email, successEl) {
-      // Endpoint Mailerlite JS embed standard
-      const url = `https://assets.mailerlite.com/jsonp/${ML_ACCOUNT_ID}/forms/${ML_FORM_ID}/subscribe`;
-      const params = new URLSearchParams({ 'fields[email]': email, 'ml-submit': '1', anticsrf: 'true' });
-
-      try {
-        const res = await fetch(`${url}?${params}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
-        if (res.ok) {
-          successEl.style.display = 'flex';
-        } else {
-          throw new Error('Erreur réseau');
-        }
-      } catch {
-        // Fallback : ouvre directement la page de souscription Mailerlite
-        window.open(`https://dashboard.mailerlite.com/forms/${ML_FORM_ID}`, '_blank');
-        successEl.style.display = 'flex';
-      }
-    }
-
-    function bindForm(formId, emailId, successId) {
-      const form    = document.getElementById(formId);
-      const emailEl = document.getElementById(emailId);
-      const success = document.getElementById(successId);
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = form.querySelector('button');
-        btn.textContent = '...';
-        btn.disabled = true;
-        await submitEmail(emailEl.value, success);
-        form.style.display = 'none';
-      });
-    }
-
-    bindForm('ml-form',   'ml-email',   'ml-success');
-    bindForm('ml-form-2', 'ml-email-2', 'ml-success-2');
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2373623');
   </script>
 
 </body>
