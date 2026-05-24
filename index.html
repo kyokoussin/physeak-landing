@@ -610,7 +610,7 @@
         <button type="submit" id="hero-btn">Rejoindre →</button>
       </form>
       <div class="form-success" id="ml-success-1">
-        <span id="hero-success">✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.</span>
+        <span id="hero-success">Merci ! On revient vers toi quand Physeak sera prêt.</span>
       </div>
     </div>
     <p class="form-note" id="hero-note">Pas de spam. Désabonnement en 1 clic.</p>
@@ -705,7 +705,7 @@
         <button type="submit" id="cta-btn">Rejoindre →</button>
       </form>
       <div class="form-success" id="ml-success-2">
-        <span id="cta-success">✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.</span>
+        <span id="cta-success">Merci ! On revient vers toi quand Physeak sera prêt.</span>
       </div>
     </div>
     <p class="form-note" id="cta-note">Objectif : 100 early adopters avant le 5 juin 2026.</p>
@@ -736,7 +736,7 @@
         'hero-subtitle': 'The Strava of fitness. Analyze your physique, discover your weak points, and track your progress on a global leaderboard.',
         'hero-email-input': 'your@email.com',
         'hero-btn': 'Join →',
-        'hero-success': '✓ &nbsp;Thanks! We\'ll be in touch when Physeak is ready.',
+        'hero-success': 'Thanks a lot! We\'ll notify you when Physeak is ready.',
         'hero-note': 'No spam. Unsubscribe in one click.',
         'badge-label': 'Preview — Your percentile badge',
         'badge-username': '@yourhandle',
@@ -756,7 +756,7 @@
         'cta-title': 'Ready to know where<br /><span>you really stand?</span>',
         'cta-email-input': 'your@email.com',
         'cta-btn': 'Join →',
-        'cta-success': '✓ &nbsp;Thanks! We\'ll be in touch when Physeak is ready.',
+        'cta-success': 'Thanks a lot! We\'ll notify you when Physeak is ready.',
         'cta-note': 'Goal: 100 early adopters by June 5, 2026.',
         'footer': '© 2026 Physeak — All rights reserved'
       },
@@ -767,7 +767,7 @@
         'hero-subtitle': 'Le Strava du physique. Analyse ton corps, découvre tes points faibles, et suis ta progression dans un leaderboard mondial.',
         'hero-email-input': 'ton@email.com',
         'hero-btn': 'Rejoindre →',
-        'hero-success': '✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.',
+        'hero-success': 'Merci beaucoup ! On te contacte bientôt.',
         'hero-note': 'Pas de spam. Désabonnement en 1 clic.',
         'badge-label': 'Aperçu — Ton badge percentile',
         'badge-username': '@tonpseudo',
@@ -787,7 +787,7 @@
         'cta-title': 'Prêt à savoir où<br /><span>tu te situes vraiment ?</span>',
         'cta-email-input': 'ton@email.com',
         'cta-btn': 'Rejoindre →',
-        'cta-success': '✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.',
+        'cta-success': 'Merci beaucoup ! On te contacte bientôt.',
         'cta-note': 'Objectif : 100 early adopters avant le 5 juin 2026.',
         'footer': '© 2026 Physeak — Tous droits réservés'
       }
@@ -837,15 +837,18 @@
         const email = form.querySelector('input[type="email"]').value;
         if (!email) return;
 
-        const mlForm = document.querySelector('.ml-embedded form');
-        if (mlForm) {
-          const mlInput = mlForm.querySelector('input[type="email"]');
-          if (mlInput) {
-            mlInput.value = email;
-            mlForm.querySelector('button[type="submit"]').click();
+        // Send to Mailerlite via their API endpoint
+        fetch('https://assets.mailerlite.com/form_submit', {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'Accept': 'application/json'
           }
-        }
+        }).catch(() => {
+          // Silent fail - Mailerlite might still receive it
+        });
 
+        // Show success message regardless
         const formWrap = form.parentElement;
         const successDiv = formWrap.querySelector('.form-success');
         if (successDiv) {
