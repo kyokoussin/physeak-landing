@@ -53,12 +53,50 @@
       color: var(--lime);
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
     .nav-badge {
       font-size: 0.7rem;
       font-weight: 600;
       color: var(--muted);
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .lang-option {
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: color 0.2s;
+      user-select: none;
+    }
+
+    .lang-option.inactive {
+      color: #555555;
+    }
+
+    .lang-option.active {
+      color: var(--text);
+    }
+
+    .lang-separator {
+      width: 1px;
+      height: 16px;
+      background: #333333;
     }
 
     /* ── HERO ── */
@@ -537,16 +575,23 @@
   <!-- NAV -->
   <nav>
     <div class="logo">PHYSEAK</div>
-    <div class="nav-badge">Bientôt disponible</div>
+    <div class="nav-right">
+      <div class="nav-badge" id="nav-badge">Bientôt disponible</div>
+      <div class="lang-separator"></div>
+      <div class="lang-toggle">
+        <span class="lang-option active" id="lang-en" data-lang="en">EN</span>
+        <span class="lang-option inactive" id="lang-fr" data-lang="fr">FR</span>
+      </div>
+    </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
     <div class="photo-grid-bg" id="photo-grid"></div>
     <div class="hero-overlay"></div>
-    <div class="tag">Liste d'attente ouverte</div>
-    <h1>Ton physique,<br /><span>scoré par l'IA.</span></h1>
-    <p class="subtitle">
+    <div class="tag" id="hero-tag">Liste d'attente ouverte</div>
+    <h1 id="hero-title">Ton physique,<br /><span>scoré par l'IA.</span></h1>
+    <p class="subtitle" id="hero-subtitle">
       Le Strava du physique. Analyse ton corps, découvre tes points faibles,
       et suis ta progression dans un leaderboard mondial.
     </p>
@@ -557,25 +602,26 @@
         <input
           type="email"
           name="email"
+          id="hero-email-input"
           placeholder="ton@email.com"
           required
           autocomplete="email"
         />
-        <button type="submit">Rejoindre →</button>
+        <button type="submit" id="hero-btn">Rejoindre →</button>
       </form>
       <div class="form-success" id="ml-success-1">
-        ✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.
+        <span id="hero-success">✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.</span>
       </div>
     </div>
-    <p class="form-note">Pas de spam. Désabonnement en 1 clic.</p>
+    <p class="form-note" id="hero-note">Pas de spam. Désabonnement en 1 clic.</p>
   </section>
 
   <!-- MOCKUP BADGE -->
   <section class="mockup-section">
-    <p class="section-label">Aperçu — Ton badge percentile</p>
+    <p class="section-label" id="badge-label">Aperçu — Ton badge percentile</p>
 
     <div class="badge-card">
-      <div class="badge-username">@tonpseudo</div>
+      <div class="badge-username" id="badge-username">@tonpseudo</div>
 
       <div class="badge-ring">
         <svg viewBox="0 0 140 140">
@@ -584,23 +630,23 @@
         </svg>
         <div class="badge-score-wrap">
           <div class="badge-score">847</div>
-          <div class="badge-score-label">Score IA</div>
+          <div class="badge-score-label" id="badge-score-label">Score IA</div>
         </div>
       </div>
 
       <div class="badge-percentile">
         <strong>Top 8%</strong>
-        <span>mondial — 41 238 membres</span>
+        <span id="badge-percentile-text">mondial — 41 238 membres</span>
       </div>
 
       <div class="badge-stats">
         <div class="stat">
           <div class="stat-val up">+23pts</div>
-          <div class="stat-label">Ce mois</div>
+          <div class="stat-label" id="badge-month">Ce mois</div>
         </div>
         <div class="stat">
           <div class="stat-val">12</div>
-          <div class="stat-label">Semaines</div>
+          <div class="stat-label" id="badge-weeks">Semaines</div>
         </div>
         <div class="stat">
           <div class="stat-val">🔥 7</div>
@@ -612,27 +658,27 @@
 
   <!-- FEATURES -->
   <section class="features">
-    <h2 class="features-title">Ce qui t'attend</h2>
+    <h2 class="features-title" id="features-title">Ce qui t'attend</h2>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">📸</div>
-        <div class="feature-title">Photo + Score IA instantané</div>
-        <div class="feature-desc">Prends une photo dans l'app. L'IA analyse ton physique en secondes et te donne un score objectif.</div>
+        <div class="feature-title" id="feature-1-title">Photo + Score IA instantané</div>
+        <div class="feature-desc" id="feature-1-desc">Prends une photo dans l'app. L'IA analyse ton physique en secondes et te donne un score objectif.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🏆</div>
-        <div class="feature-title">Leaderboard mondial</div>
-        <div class="feature-desc">Comprends exactement où tu te situes par rapport au reste du monde. Ton pourcentage, en temps réel.</div>
+        <div class="feature-title" id="feature-2-title">Leaderboard mondial</div>
+        <div class="feature-desc" id="feature-2-desc">Comprends exactement où tu te situes par rapport au reste du monde. Ton pourcentage, en temps réel.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🎯</div>
-        <div class="feature-title">Analyse de tes points faibles</div>
-        <div class="feature-desc">L'IA identifie ce qui te retient : épaules, dos, cardio. Tu sais exactement quoi travailler.</div>
+        <div class="feature-title" id="feature-3-title">Analyse de tes points faibles</div>
+        <div class="feature-desc" id="feature-3-desc">L'IA identifie ce qui te retient : épaules, dos, cardio. Tu sais exactement quoi travailler.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📈</div>
-        <div class="feature-title">Journal de progression</div>
-        <div class="feature-desc">Visualise ta transformation semaine après semaine. Tes gains, documentés et comparables.</div>
+        <div class="feature-title" id="feature-4-title">Journal de progression</div>
+        <div class="feature-desc" id="feature-4-desc">Visualise ta transformation semaine après semaine. Tes gains, documentés et comparables.</div>
       </div>
     </div>
 
@@ -644,28 +690,29 @@
 
   <!-- CTA BOTTOM -->
   <section class="cta-bottom">
-    <h2>Prêt à savoir où<br /><span>tu te situes vraiment ?</span></h2>
+    <h2 id="cta-title">Prêt à savoir où<br /><span>tu te situes vraiment ?</span></h2>
 
     <div class="form-wrap">
       <form class="form-row" data-mailerlite-form="2">
         <input
           type="email"
           name="email"
+          id="cta-email-input"
           placeholder="ton@email.com"
           required
           autocomplete="email"
         />
-        <button type="submit">Rejoindre →</button>
+        <button type="submit" id="cta-btn">Rejoindre →</button>
       </form>
       <div class="form-success" id="ml-success-2">
-        ✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.
+        <span id="cta-success">✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.</span>
       </div>
     </div>
-    <p class="form-note">Objectif : 100 early adopters avant le 5 juin 2026.</p>
+    <p class="form-note" id="cta-note">Objectif : 100 early adopters avant le 5 juin 2026.</p>
   </section>
 
   <!-- FOOTER -->
-  <footer>
+  <footer id="footer">
     © 2026 Physeak — Tous droits réservés
   </footer>
 
@@ -679,15 +726,117 @@
     ml('account', '2373623');
   </script>
 
-  <!-- FORM HANDLER -->
+  <!-- LANGUAGE & FORM HANDLER -->
   <script>
+    const translations = {
+      en: {
+        'nav-badge': 'Coming soon',
+        'hero-tag': 'Waitlist open',
+        'hero-title': 'Your physique,<br /><span>AI-scored.</span>',
+        'hero-subtitle': 'The Strava of fitness. Analyze your physique, discover your weak points, and track your progress on a global leaderboard.',
+        'hero-email-input': 'your@email.com',
+        'hero-btn': 'Join →',
+        'hero-success': '✓ &nbsp;Thanks! We\'ll be in touch when Physeak is ready.',
+        'hero-note': 'No spam. Unsubscribe in one click.',
+        'badge-label': 'Preview — Your percentile badge',
+        'badge-username': '@yourhandle',
+        'badge-score-label': 'AI Score',
+        'badge-percentile-text': 'worldwide — 41,238 members',
+        'badge-month': 'This month',
+        'badge-weeks': 'Weeks',
+        'features-title': 'What you\'ll get',
+        'feature-1-title': 'Instant photo & AI scoring',
+        'feature-1-desc': 'Snap a photo in-app. Our AI analyzes your physique in seconds and delivers an objective score.',
+        'feature-2-title': 'Global leaderboard',
+        'feature-2-desc': 'See exactly where you stack up worldwide. Real-time percentile, no BS.',
+        'feature-3-title': 'Weak point analysis',
+        'feature-3-desc': 'Our AI pinpoints what\'s holding you back: shoulders, back, cardio. Know exactly what to train.',
+        'feature-4-title': 'Progress journal',
+        'feature-4-desc': 'Watch your transformation week by week. Your gains, documented and measurable.',
+        'cta-title': 'Ready to know where<br /><span>you really stand?</span>',
+        'cta-email-input': 'your@email.com',
+        'cta-btn': 'Join →',
+        'cta-success': '✓ &nbsp;Thanks! We\'ll be in touch when Physeak is ready.',
+        'cta-note': 'Goal: 100 early adopters by June 5, 2026.',
+        'footer': '© 2026 Physeak — All rights reserved'
+      },
+      fr: {
+        'nav-badge': 'Bientôt disponible',
+        'hero-tag': 'Liste d\'attente ouverte',
+        'hero-title': 'Ton physique,<br /><span>scoré par l\'IA.</span>',
+        'hero-subtitle': 'Le Strava du physique. Analyse ton corps, découvre tes points faibles, et suis ta progression dans un leaderboard mondial.',
+        'hero-email-input': 'ton@email.com',
+        'hero-btn': 'Rejoindre →',
+        'hero-success': '✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.',
+        'hero-note': 'Pas de spam. Désabonnement en 1 clic.',
+        'badge-label': 'Aperçu — Ton badge percentile',
+        'badge-username': '@tonpseudo',
+        'badge-score-label': 'Score IA',
+        'badge-percentile-text': 'mondial — 41 238 membres',
+        'badge-month': 'Ce mois',
+        'badge-weeks': 'Semaines',
+        'features-title': 'Ce qui t\'attend',
+        'feature-1-title': 'Photo + Score IA instantané',
+        'feature-1-desc': 'Prends une photo dans l\'app. L\'IA analyse ton physique en secondes et te donne un score objectif.',
+        'feature-2-title': 'Leaderboard mondial',
+        'feature-2-desc': 'Comprends exactement où tu te situes par rapport au reste du monde. Ton pourcentage, en temps réel.',
+        'feature-3-title': 'Analyse de tes points faibles',
+        'feature-3-desc': 'L\'IA identifie ce qui te retient : épaules, dos, cardio. Tu sais exactement quoi travailler.',
+        'feature-4-title': 'Journal de progression',
+        'feature-4-desc': 'Visualise ta transformation semaine après semaine. Tes gains, documentés et comparables.',
+        'cta-title': 'Prêt à savoir où<br /><span>tu te situes vraiment ?</span>',
+        'cta-email-input': 'ton@email.com',
+        'cta-btn': 'Rejoindre →',
+        'cta-success': '✓ &nbsp;Merci ! On revient vers toi quand Physeak sera prêt.',
+        'cta-note': 'Objectif : 100 early adopters avant le 5 juin 2026.',
+        'footer': '© 2026 Physeak — Tous droits réservés'
+      }
+    };
+
+    let currentLang = 'fr';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('physeak-lang', lang);
+
+      // Update all translatable elements
+      Object.keys(translations[lang]).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          const html = translations[lang][id];
+          if (id.includes('title') || id.includes('name') || id === 'hero-subtitle') {
+            el.innerHTML = html;
+          } else {
+            el.textContent = html;
+          }
+        }
+      });
+
+      // Update language toggle styles
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-en').classList.toggle('inactive', lang !== 'en');
+      document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
+      document.getElementById('lang-fr').classList.toggle('inactive', lang !== 'fr');
+
+      // Update html lang attribute
+      document.documentElement.lang = lang;
+    }
+
+    // Load saved language or default to FR
+    const savedLang = localStorage.getItem('physeak-lang') || 'fr';
+    setLanguage(savedLang);
+
+    // Language toggle handlers
+    document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+    document.getElementById('lang-fr').addEventListener('click', () => setLanguage('fr'));
+
+    // Form handler
     document.querySelectorAll('[data-mailerlite-form]').forEach(form => {
       form.addEventListener('submit', e => {
         e.preventDefault();
         const email = form.querySelector('input[type="email"]').value;
         if (!email) return;
 
-        // Trouver et remplir le formulaire Mailerlite caché
         const mlForm = document.querySelector('.ml-embedded form');
         if (mlForm) {
           const mlInput = mlForm.querySelector('input[type="email"]');
@@ -697,7 +846,6 @@
           }
         }
 
-        // Afficher succès et masquer formulaire
         const formWrap = form.parentElement;
         const successDiv = formWrap.querySelector('.form-success');
         if (successDiv) {
