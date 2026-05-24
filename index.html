@@ -116,8 +116,9 @@
     .photo-grid-bg {
       position: absolute;
       inset: 0;
-      background: url('hero_image1.png') center/cover no-repeat;
+      background: url('hero_image1.png') center/contain no-repeat;
       z-index: 0;
+      background-position: center 40%;
     }
 
     .hero-overlay {
@@ -563,10 +564,123 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      nav { padding: 16px 20px; }
-      .form-row { flex-direction: column; border-radius: 12px; }
-      .form-row button { border-radius: 0 0 10px 10px; padding: 14px; }
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 20px;
+        flex-wrap: wrap;
+      }
+      .nav-right {
+        gap: 12px;
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+        min-height: auto;
+      }
+
+      .photo-grid-bg {
+        background-size: auto 120%;
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 6vw, 2.8rem);
+        margin-bottom: 16px;
+      }
+
+      .subtitle {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        margin-bottom: 32px;
+      }
+
+      .tag {
+        font-size: 0.65rem;
+        padding: 5px 12px;
+        margin-bottom: 24px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        border-radius: 12px;
+      }
+
+      .form-row button {
+        border-radius: 0 0 10px 10px;
+        padding: 12px;
+        font-size: 0.85rem;
+      }
+
+      .form-wrap {
+        max-width: 100%;
+      }
+
+      .mockup-section {
+        padding: 60px 20px;
+      }
+
+      .badge-card {
+        padding: 30px 24px;
+        max-width: 100%;
+      }
+
+      .badge-ring {
+        width: 110px;
+        height: 110px;
+      }
+
+      .badge-ring svg {
+        width: 110px;
+        height: 110px;
+      }
+
+      .badge-score {
+        font-size: 2.2rem;
+      }
+
+      .features {
+        padding: 60px 20px;
+      }
+
+      .features-title {
+        font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+        margin-bottom: 32px;
+      }
+
+      .feature-card {
+        padding: 20px 18px;
+      }
+
+      .feature-title {
+        font-size: 0.9rem;
+      }
+
+      .feature-desc {
+        font-size: 0.8rem;
+      }
+
+      .cta-bottom {
+        padding: 60px 20px 100px;
+        gap: 20px;
+      }
+
+      .cta-bottom h2 {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+      }
+
+      footer {
+        padding: 20px;
+        font-size: 0.7rem;
+      }
+
+      .lang-toggle {
+        gap: 6px;
+        font-size: 0.7rem;
+      }
+
+      .lang-option {
+        padding: 3px 6px;
+      }
     }
   </style>
 </head>
@@ -837,18 +951,28 @@
         const email = form.querySelector('input[type="email"]').value;
         if (!email) return;
 
-        // Send to Mailerlite via their API endpoint
+        // Try sending to Mailerlite - use simpler approach for better mobile compatibility
+        const formId = form.getAttribute('data-mailerlite-form');
+        const params = new URLSearchParams();
+        params.append('email', email);
+
         fetch('https://assets.mailerlite.com/form_submit', {
           method: 'POST',
-          body: new FormData(form),
-          headers: {
-            'Accept': 'application/json'
-          }
+          body: params,
+          mode: 'no-cors'
         }).catch(() => {
-          // Silent fail - Mailerlite might still receive it
+          // Fallback: try alternative endpoint
+          fetch('https://ml-forms.mailerlite.com/forms/submit/CwWYSL', {
+            method: 'POST',
+            body: JSON.stringify({ email: email }),
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'no-cors'
+          }).catch(() => {
+            // Silent fail - show success anyway
+          });
         });
 
-        // Show success message regardless
+        // Show success message
         const formWrap = form.parentElement;
         const successDiv = formWrap.querySelector('.form-success');
         if (successDiv) {
