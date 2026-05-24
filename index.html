@@ -116,9 +116,17 @@
     .photo-grid-bg {
       position: absolute;
       inset: 0;
-      background: url('hero_image1.png') center/contain no-repeat;
+      background: url('hero_image1.png') center / cover no-repeat;
       z-index: 0;
-      background-position: center 40%;
+      background-size: 100% auto;
+      background-position: center top;
+    }
+
+    @media (max-width: 768px) {
+      .photo-grid-bg {
+        background-size: auto 100%;
+        background-position: center;
+      }
     }
 
     .hero-overlay {
@@ -830,8 +838,14 @@
     © 2026 Physeak — Tous droits réservés
   </footer>
 
-  <!-- MAILERLITE SCRIPT -->
-  <div class="ml-embedded" data-form="CwWYSL"></div>
+  <!-- MAILERLITE SCRIPT & HIDDEN FORM -->
+  <div class="ml-embedded" data-form="CwWYSL" style="display: none !important;">
+    <form id="ml-hidden-form" action="https://assets.mailerlite.com/form_submit" method="POST" style="display: none;">
+      <input type="hidden" name="form_id" value="CwWYSL" />
+      <input type="email" id="ml-email-input" name="email" required />
+      <button type="submit" style="display: none;"></button>
+    </form>
+  </div>
   <script>
     (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
     .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
@@ -951,26 +965,15 @@
         const email = form.querySelector('input[type="email"]').value;
         if (!email) return;
 
-        // Try sending to Mailerlite - use simpler approach for better mobile compatibility
-        const formId = form.getAttribute('data-mailerlite-form');
-        const params = new URLSearchParams();
-        params.append('email', email);
-
-        fetch('https://assets.mailerlite.com/form_submit', {
-          method: 'POST',
-          body: params,
-          mode: 'no-cors'
-        }).catch(() => {
-          // Fallback: try alternative endpoint
-          fetch('https://ml-forms.mailerlite.com/forms/submit/CwWYSL', {
-            method: 'POST',
-            body: JSON.stringify({ email: email }),
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'no-cors'
-          }).catch(() => {
-            // Silent fail - show success anyway
-          });
-        });
+        // Submit to hidden Mailerlite form
+        const mlForm = document.getElementById('ml-hidden-form');
+        if (mlForm) {
+          const mlEmailInput = mlForm.querySelector('input[type="email"]');
+          if (mlEmailInput) {
+            mlEmailInput.value = email;
+            mlForm.submit();
+          }
+        }
 
         // Show success message
         const formWrap = form.parentElement;
