@@ -122,11 +122,9 @@
       background-position: center top;
     }
 
-    @media (max-width: 768px) {
-      .photo-grid-bg {
-        background-size: auto 100%;
-        background-position: center;
-      }
+    /* Hide mobile-only image on desktop */
+    .hero-mobile-img {
+      display: none;
     }
 
     .hero-overlay {
@@ -586,10 +584,21 @@
       .hero {
         padding: 100px 20px 60px;
         min-height: auto;
+        justify-content: flex-start;
       }
 
-      .photo-grid-bg {
-        background-size: auto 120%;
+      .photo-grid-bg,
+      .hero-overlay {
+        display: none;
+      }
+
+      .hero-mobile-img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 500px;
+        margin: 8px 0 32px;
+        border-radius: 12px;
       }
 
       h1 {
@@ -599,7 +608,7 @@
 
       .subtitle {
         font-size: clamp(0.9rem, 2vw, 1rem);
-        margin-bottom: 32px;
+        margin-bottom: 24px;
       }
 
       .tag {
@@ -717,6 +726,7 @@
       Le Strava du physique. Analyse ton corps, découvre tes points faibles,
       et suis ta progression dans un leaderboard mondial.
     </p>
+    <img src="hero_image1.png" alt="" class="hero-mobile-img" />
 
     <!-- Custom form (submits to hidden Mailerlite) -->
     <div class="form-wrap">
