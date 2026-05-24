@@ -848,14 +848,8 @@
     © 2026 Physeak — Tous droits réservés
   </footer>
 
-  <!-- MAILERLITE SCRIPT & HIDDEN FORM -->
-  <div class="ml-embedded" data-form="CwWYSL" style="display: none !important;">
-    <form id="ml-hidden-form" action="https://assets.mailerlite.com/form_submit" method="POST" style="display: none;">
-      <input type="hidden" name="form_id" value="CwWYSL" />
-      <input type="email" id="ml-email-input" name="email" required />
-      <button type="submit" style="display: none;"></button>
-    </form>
-  </div>
+  <!-- MAILERLITE SCRIPT -->
+  <div class="ml-embedded" data-form="CwWYSL" style="display:none"></div>
   <script>
     (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
     .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
@@ -968,24 +962,59 @@
     document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
     document.getElementById('lang-fr').addEventListener('click', () => setLanguage('fr'));
 
+    // Wait for Mailerlite form to be loaded in the DOM
+    function waitForMailerliteForm(timeout = 10000) {
+      return new Promise((resolve, reject) => {
+        const start = Date.now();
+        const check = () => {
+          const mlContainer = document.querySelector('.ml-embedded[data-form="CwWYSL"]');
+          const mlForm = mlContainer ? mlContainer.querySelector('form') : null;
+          const mlEmailInput = mlForm ? mlForm.querySelector('input[type="email"]') : null;
+
+          if (mlForm && mlEmailInput) {
+            resolve({ form: mlForm, input: mlEmailInput });
+          } else if (Date.now() - start > timeout) {
+            reject(new Error('Mailerlite form did not load in time'));
+          } else {
+            setTimeout(check, 200);
+          }
+        };
+        check();
+      });
+    }
+
     // Form handler
     document.querySelectorAll('[data-mailerlite-form]').forEach(form => {
-      form.addEventListener('submit', e => {
+      form.addEventListener('submit', async e => {
         e.preventDefault();
         const email = form.querySelector('input[type="email"]').value;
         if (!email) return;
 
-        // Submit to hidden Mailerlite form
-        const mlForm = document.getElementById('ml-hidden-form');
-        if (mlForm) {
-          const mlEmailInput = mlForm.querySelector('input[type="email"]');
-          if (mlEmailInput) {
-            mlEmailInput.value = email;
-            mlForm.submit();
+        try {
+          const { form: mlForm, input: mlEmailInput } = await waitForMailerliteForm();
+
+          // Inject the email value
+          const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype, 'value'
+          ).set;
+          nativeInputValueSetter.call(mlEmailInput, email);
+
+          // Trigger input event so Mailerlite detects the change
+          mlEmailInput.dispatchEvent(new Event('input', { bubbles: true }));
+          mlEmailInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+          // Submit the Mailerlite form programmatically
+          const submitBtn = mlForm.querySelector('button[type="submit"], input[type="submit"]');
+          if (submitBtn) {
+            submitBtn.click();
+          } else {
+            mlForm.requestSubmit ? mlForm.requestSubmit() : mlForm.submit();
           }
+        } catch (err) {
+          console.error('Mailerlite submission failed:', err);
         }
 
-        // Show success message
+        // Show success message in the custom UI
         const formWrap = form.parentElement;
         const successDiv = formWrap.querySelector('.form-success');
         if (successDiv) {
